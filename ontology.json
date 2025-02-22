@@ -1,0 +1,29 @@
+[
+   {
+    "id": "/m/03qc9zr",
+    "name": "Screaming",
+    "description": "A sharp, high-pitched human vocalization; often an instinctive action indicating fear, pain, surprise, joy, anger, etc. Verbal content is absent or overwhelmed, unlike Shout and Yell.",
+    "citation_uri": "http://en.wikipedia.org/wiki/Screaming",
+    "positive_examples": ["youtu.be/ZHrf_y9q96Q?start=20&end=30", "youtu.be/GqTExeZqXzw?start=20&end=30", "youtu.be/vgpAqgBIpdM?start=220&end=230", "youtu.be/GUsI_2tYVYM?start=29&end=39", "youtu.be/52waxTykuLc?start=30&end=40", "youtu.be/auC_LgwFF8g?start=30&end=40"],
+    "child_ids": [],
+    "restrictions": []
+  }, 
+ {
+    "id": "/m/0463cq4",
+    "name": "Crying, sobbing",
+    "description": "Sound associated with the shedding of tears in response to an emotional state, arising from slow but erratic inhalation, occasional instances of breath holding and muscular tremor.",
+    "citation_uri": "http://en.wikipedia.org/wiki/Crying",
+    "positive_examples": ["youtu.be/RM6ekNDE2wc?start=15&end=25", "youtu.be/8Y2VGN-QsEs?start=10&end=20", "youtu.be/kEuZE_uu1rs?start=10&end=20", "youtu.be/5Fnc7yYDDvM?start=10&end=20", "youtu.be/rYyKWyIfVpU?start=10&end=20", "youtu.be/5KgGTZEsMsQ?start=10&end=20", "youtu.be/x9vxPUVx40Y?start=30&end=40", "youtu.be/fpWdNeGCKqc?start=40&end=50", "youtu.be/SfG3IkOprQc?start=60&end=70"],
+    "child_ids": ["/t/dd00002", "/m/07qz6j3"],
+    "restrictions": []
+  },
+  {
+    "id": "/t/dd00002",
+    "name": "Baby cry, infant cry",
+    "description": "The sound of a young child crying or bawling.",
+    "citation_uri": "",
+    "positive_examples": ["youtu.be/6T2jEKesKXY?start=30&end=40", "youtu.be/-mvGA8duqKM?start=29&end=39", "youtu.be/qc8n-R16jqI?start=30&end=40", "youtu.be/YFK6RwUBpHg?start=10&end=20", "youtu.be/VbtgXizyof4?start=30&end=40", "youtu.be/R6-KBbwNo1Q?start=30&end=40", "youtu.be/CmXA759VLZo?start=7&end=17", "youtu.be/qK4ag_CDBq4?start=30&end=40", "youtu.be/d-1zfgzgBgc?start=14&end=24"],
+    "child_ids": [],
+    "restrictions": []
+  }
+]

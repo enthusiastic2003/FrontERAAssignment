@@ -1,1 +1,10 @@
 tensorflow==2.16.2
+tensorflow==0.37.1
+kagglehub
+requests
+pandas
+librosa
+soundfile
+matplotlib
+numpy
+audiomentations

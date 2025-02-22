@@ -7,16 +7,17 @@ import matplotlib.pyplot as plt
 from IPython.display import Audio
 from scipy.io import wavfile
 import pandas as pd
-
+from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
 
 ### Constants
-train_split = 0.7
-val_split = 0.15
-test_split = 0.15
+train_split = 0.8
+val_split = 0.1
+test_split = 0.1
 batch_size = 1
 num_epochs = 10
 learning_rate = 0.001
 num_classes = 3
+augment = True
 model_path = "models/model.h5"
 model_name = "model.h5"
 model_dir = "models"
@@ -28,16 +29,34 @@ control_loc = "dataClassified/control_data"
 ###
 
 
+augmentor = Compose([
+    AddGaussianNoise(min_amplitude=0.001, max_amplitude=0.015, p=0.5),
+    TimeStretch(min_rate=0.8, max_rate=1.25, p=0.5),
+    PitchShift(min_semitones=-4, max_semitones=4, p=0.5),
+    Shift(min_shift=-0.5, max_shift=0.5, p=0.5),
+    ])
+
 @tf.function
-def load_wav_16k_mono(filename , label):
-    """ Load a WAV file, convert it to a float tensor, resample to 16 kHz single-channel audio. """
+def load_wav_16k_mono(filename, label, augment=False):
+    """Load a WAV file, convert it to float tensor, resample to 16 kHz, apply augmentation if needed."""
     file_contents = tf.io.read_file(filename)
-    wav, sample_rate = tf.audio.decode_wav(
-          file_contents,
-          desired_channels=1)
+    wav, sample_rate = tf.audio.decode_wav(file_contents, desired_channels=1)
     wav = tf.squeeze(wav, axis=-1)
-    sample_rate = tf.cast(sample_rate, dtype=tf.int64)
+    
+    # Resample if needed
+    if sample_rate != 16000:
+        wav = tf.numpy_function(
+            lambda x: tf.audio.resample(x, sample_rate, 16000),
+            [wav],
+            tf.float32
+        )
+    
+    # Apply augmentation if enabled
+    if augment:
+        wav = augmentor(samples=wav, sample_rate=16000)
+    
     return wav, label
+
 
 
 import tensorflow as tf
