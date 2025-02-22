@@ -17,7 +17,6 @@ batch_size = 1
 num_epochs = 10
 learning_rate = 0.001
 num_classes = 3
-augment = True
 model_path = "models/model.h5"
 model_name = "model.h5"
 model_dir = "models"
@@ -38,24 +37,29 @@ augmentor = Compose([
 
 @tf.function
 def load_wav_16k_mono(filename, label, augment=False):
-    """Load a WAV file, convert it to float tensor, resample to 16 kHz, apply augmentation if needed."""
+    """Load a WAV file, convert to float tensor, resample to 16 kHz, apply augmentation if needed."""
     file_contents = tf.io.read_file(filename)
     wav, sample_rate = tf.audio.decode_wav(file_contents, desired_channels=1)
-    wav = tf.squeeze(wav, axis=-1)
-    
-    # Resample if needed
-    if sample_rate != 16000:
-        wav = tf.numpy_function(
-            lambda x: tf.audio.resample(x, sample_rate, 16000),
-            [wav],
-            tf.float32
-        )
-    
-    # Apply augmentation if enabled
+    wav = tf.squeeze(wav, axis=-1)  # Remove extra dimension
+    wav.set_shape([None])  # Ensure the shape is defined
+
     if augment:
-        wav = augmentor(samples=wav, sample_rate=16000)
-    
+        # Apply augmentation using tf.py_function
+        wav = tf.py_function(func=apply_augmentation, inp=[wav], Tout=tf.float32)
+        wav.set_shape([None])  # Set shape again after py_function
+
     return wav, label
+
+def apply_augmentation(wav):
+    # Ensure the input is a NumPy array
+    wav_np = wav.numpy() if isinstance(wav, tf.Tensor) else wav
+
+    # Apply audiomentations augmentor
+    augmented = augmentor(samples=wav_np, sample_rate=16000)
+
+    return augmented.astype(np.float32)
+
+
 
 
 
@@ -83,7 +87,10 @@ class CustomDataset(tf.data.Dataset):
         # Create dataset
         #dataset = tf.data.Dataset.from_tensor_slices((file_paths, labels))
         dataset = tf.data.Dataset.from_tensor_slices((file_paths, labels))
-        dataset = dataset.map(load_wav_16k_mono, num_parallel_calls=tf.data.AUTOTUNE)
+
+        # Map loading function but pass in augment=False if this is the test set or validation set 
+        augment = True if data_type == "train" else False
+        dataset = dataset.map(lambda x, y: load_wav_16k_mono(x, y, augment), num_parallel_calls=tf.data.AUTOTUNE)
 
         # No batching, return samples 1 by 1
         dataset = dataset.prefetch(tf.data.AUTOTUNE)

@@ -2,3 +2,8 @@ dataClassified
 tempData
 __pycache__
 downloaded_segments
+train_temp.csv
+val_temp.csv
+dataset-archived.tar
+logs
+results
