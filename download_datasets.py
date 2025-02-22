@@ -124,7 +124,11 @@ def main():
     )
 
     # Copy /home/sirjanh/Downloads/cv-corpus-20.0-delta-2024-12-06-en.tar.gz to tempData
-    cv_corpus_url = "/home/sirjanh/Downloads/cv-corpus-20.0-delta-2024-12-06-en.tar.gz"
+    # Dyanmically set the path to the downloads folder
+
+    userDownloads = os.path.expanduser("~") + "/Downloads"
+
+    cv_corpus_url = f"{userDownloads}/cv-corpus-20.0-delta-2024-12-06-en.tar.gz"
     cv_corpus_tar = cv_corpus_url
     if cv_corpus_tar:
         downloader.extract_archive(cv_corpus_tar, "MozillaControlData")
