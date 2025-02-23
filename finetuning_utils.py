@@ -10,7 +10,7 @@ import tensorflow_hub as hub
 def extract_embedding(wav, model):
     """ Pass audio through the pretrained model to get embeddings """
     scores, embeddings, spectrogram = model(wav)
-    return list(embeddings)
+    return tf.math.reduce_mean(embeddings, axis=0)
 
 # Process the dataset to get embeddings
 def preprocess_dataset(dataset, model):
@@ -20,6 +20,6 @@ def preprocess_dataset(dataset, model):
     for wav, label in dataset:
         embeddings = extract_embedding(wav, model)
         #mean_embedding = tf.reduce_mean(embeddings, axis=0)  # Aggregate embeddings
-        embedding_list.extend(embeddings)
-        label_list.extend([label] * len(embeddings))
+        embedding_list.append(embeddings)
+        label_list.extend([label])
     return tf.stack(embedding_list), tf.convert_to_tensor(label_list)

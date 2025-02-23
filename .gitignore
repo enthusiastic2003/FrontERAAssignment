@@ -7,3 +7,6 @@ val_temp.csv
 dataset-archived.tar
 logs
 results
+*.npy
+*.pth
+*keras
