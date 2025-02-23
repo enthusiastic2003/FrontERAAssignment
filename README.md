@@ -46,7 +46,3 @@ Once the datasets are prepared, you can fine-tune the models by running the foll
 - `FineTuning_yamnetModel.ipynb`
 
 These notebooks guide you through the fine-tuning process for both Wav2Vec2 and YAMNet models using the prepared datasets.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
